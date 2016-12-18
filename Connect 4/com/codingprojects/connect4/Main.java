@@ -44,8 +44,6 @@ public class Main {
         c4b.insertToken(3, PlayerColor.Red);
         System.out.println(c4b.printableBoard());
         System.out.println(c4b.winner().name());
-        c4b.insertToken(0, PlayerColor.Black);
-        System.out.println(c4b.printableBoard());
-        System.out.println(c4b.winner().name());
+
     }
 }
