@@ -13,6 +13,7 @@ local.properties
 
 # Eclipse Core
 .project
+.idea/
 
 # External tool builders
 .externalToolBuilders/
