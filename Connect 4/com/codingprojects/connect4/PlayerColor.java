@@ -8,4 +8,8 @@ public enum PlayerColor {
     public static PlayerColor getNext(PlayerColor currentPlayer) {
         return (currentPlayer == Red)? Yellow : Red;
     }
+
+    public static PlayerColor first() {
+        return Red;
+    }
 }
