@@ -1,4 +1,6 @@
-package com.codingprojects.connect4;
+package com.codingprojects.connect4.agents;
+
+import com.codingprojects.connect4.PlayerColor;
 
 /**
  * Abstract class, defining the behavior of a decision unit for the connect 4 game. Can be implemented as either an
