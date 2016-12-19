@@ -11,6 +11,7 @@ public class Connect4Board {
      */
     public static final int BoardWidth = 7;
 
+
     /**
      * Number of rows in the board.
      */
@@ -21,6 +22,12 @@ public class Connect4Board {
      * Vertical connect 4 game board.
      */
     private PlayerColor[][] board;
+
+
+    /**
+     * Keeps track of the number of tokens dropped into the board.
+     */
+    private int numberOfTokens;
 
 
     /**
@@ -41,7 +48,9 @@ public class Connect4Board {
                 this.board[col][row] = PlayerColor.None;
             }
         }
+        this.numberOfTokens = 0;
     }
+
 
     /**
      * Gets a copy of the board.
@@ -55,7 +64,6 @@ public class Connect4Board {
         }
         return output;
     }
-
 
 
     /**
@@ -88,6 +96,7 @@ public class Connect4Board {
            }
        }
 
+       this.numberOfTokens += 1;
        return true;
     }
 
@@ -99,8 +108,8 @@ public class Connect4Board {
      * @return the color of the winner.
      */
     public PlayerColor winner() {
-        boolean redHas4 = false;
-        boolean ylwHas4 = false;
+        boolean blackHas4 = false;
+        boolean whiteHas4 = false;
 
         for (int col = 0; col < BoardWidth; ++col) {
             for (int row = 0; row < BoardHeight; ++row) {
@@ -108,8 +117,8 @@ public class Connect4Board {
 
                 boolean skipCondition =
                         currPT == PlayerColor.None ||
-                        (currPT == PlayerColor.Red && redHas4) ||
-                        (currPT == PlayerColor.Yellow && ylwHas4);
+                        (currPT == PlayerColor.Black && blackHas4) ||
+                        (currPT == PlayerColor.White && whiteHas4);
 
                 if (!skipCondition) {
                     boolean currPTFound4 = false;
@@ -136,27 +145,37 @@ public class Connect4Board {
                     }
 
                     // Check 3 tiles to the S
-                    if (row <= BoardWidth - 4) {
+                    if (row <= BoardHeight - 4) {
                         currPTFound4 |= (this.board[col][row + 1] == currPT) &&
                                 (this.board[col][row + 2] == currPT) &&
                                 (this.board[col][row + 3] == currPT);
 
                     }
 
-                    if (currPT == PlayerColor.Yellow) {
-                        ylwHas4 |= currPTFound4;
+                    if (currPT == PlayerColor.White) {
+                        whiteHas4 |= currPTFound4;
                     } else {
-                        redHas4 |= currPTFound4;
+                        blackHas4 |= currPTFound4;
                     }
                 }
             }
         }
 
-        return (redHas4 && ylwHas4)? PlayerColor.None :
-               redHas4? PlayerColor.Red :
-               ylwHas4? PlayerColor.Yellow :
+        return (blackHas4 && whiteHas4)? PlayerColor.None :
+               blackHas4? PlayerColor.Black :
+               whiteHas4? PlayerColor.White :
                PlayerColor.None;
     }
+
+
+    /**
+     * Returns true if the board has no more available spaces.
+     * @return True if the board has no more available spaces.
+     */
+    public boolean isFull() {
+        return (this.numberOfTokens == (BoardHeight * BoardWidth));
+    }
+
 
     /**
      * Returns an ASCII representation of the connect 4 board.
@@ -172,8 +191,8 @@ public class Connect4Board {
             for (int col = 0; col < BoardWidth; ++col) {
                 PlayerColor currToken = this.board[col][row];
                 char currTokenChar =
-                        (currToken == PlayerColor.Red)? PlayerColor.Red.name().charAt(0) :
-                        (currToken == PlayerColor.Yellow)? PlayerColor.Yellow.name().charAt(0) :
+                        (currToken == PlayerColor.Black)? PlayerColor.Black.name().charAt(0) :
+                        (currToken == PlayerColor.White)? PlayerColor.White.name().charAt(0) :
                         ' ';
                 output.append(currTokenChar);
             }
