@@ -5,6 +5,8 @@ import com.codingprojects.connect4.PlayerColor;
 import java.util.*;
 
 /**
+ * RandomAgent will arbitrarily select an open column.
+ *
  * Created by austi on 2016-12-18.
  */
 public class RandomAgent extends Agent {
@@ -32,7 +34,10 @@ public class RandomAgent extends Agent {
     }
 
     @Override
-    public int perceiveAndAct(PlayerColor[][] board) {
+    public int perceive(PlayerColor[][] board) {
+
+        super.perceive(board);
+
         // Determine possible moves.
         List<Integer> possibleMoves = new ArrayList<>();
 

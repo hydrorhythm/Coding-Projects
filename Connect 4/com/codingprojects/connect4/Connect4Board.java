@@ -111,6 +111,7 @@ public class Connect4Board {
         return Connect4Board.winner(this.board);
     }
 
+
     /**
      * Returns the color of the player that has won the game. If both players have a connect 4 or neither do, then
      * this will return PlayerColor.None.
@@ -119,6 +120,10 @@ public class Connect4Board {
      * @return the color of the winner.
      */
     public static PlayerColor winner(PlayerColor[][] testBoard) {
+
+        if (null == testBoard || 0 == testBoard.length || 0 == testBoard[0].length)
+            return PlayerColor.None;
+
         boolean blackHas4 = false;
         boolean whiteHas4 = false;
 

@@ -2,6 +2,8 @@ package com.codingprojects.connect4.agents;
 
 import com.codingprojects.connect4.PlayerColor;
 
+import java.security.InvalidParameterException;
+
 /**
  * Abstract class, defining the behavior of a decision unit for the connect 4 game. Can be implemented as either an
  * artificial intelligence or a human player.
@@ -13,7 +15,7 @@ public abstract class Agent {
     /**
      * Determines which pieces belong to the player.
      */
-    private PlayerColor myColor;
+    protected PlayerColor color;
 
     /**
      * Initializes this agent with a token color.
@@ -21,7 +23,7 @@ public abstract class Agent {
      * @param color Color of the tokens used by this player.
      */
     public Agent(PlayerColor color) {
-        this.myColor = color;
+        this.color = color;
     }
 
     /**
@@ -30,7 +32,7 @@ public abstract class Agent {
      * @return The color of this agent.
      */
     public PlayerColor getPlayerColor() {
-        return this.myColor;
+        return this.color;
     }
 
     /**
@@ -43,5 +45,10 @@ public abstract class Agent {
      *
      * @return An integer representing the column the player wishes to drop a token into.
      */
-    abstract public int perceiveAndAct(PlayerColor[][] board);
+    public int perceive(PlayerColor[][] board) {
+        if (null == board || 0 == board.length || 0 == board[0].length) {
+            throw new InvalidParameterException("Board has no dimensions.");
+        }
+        return 0; // valid board return code.
+    }
 }
