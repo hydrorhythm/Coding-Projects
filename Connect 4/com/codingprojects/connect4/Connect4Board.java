@@ -128,8 +128,8 @@ public class Connect4Board {
 
                 boolean skipCondition =
                         currPT == PlayerColor.None ||
-                                (currPT == PlayerColor.Black && blackHas4) ||
-                                (currPT == PlayerColor.White && whiteHas4);
+                        (currPT == PlayerColor.Black && blackHas4) ||
+                        (currPT == PlayerColor.White && whiteHas4);
 
                 if (!skipCondition) {
                     boolean currPTFound4 = false;
@@ -173,9 +173,9 @@ public class Connect4Board {
         }
 
         return (blackHas4 && whiteHas4)? PlayerColor.None :
-                blackHas4? PlayerColor.Black :
-                        whiteHas4? PlayerColor.White :
-                                PlayerColor.None;
+               blackHas4? PlayerColor.Black :
+               whiteHas4? PlayerColor.White :
+               PlayerColor.None;
     }
 
 
