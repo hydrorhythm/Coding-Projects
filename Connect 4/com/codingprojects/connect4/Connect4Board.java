@@ -108,47 +108,58 @@ public class Connect4Board {
      * @return the color of the winner.
      */
     public PlayerColor winner() {
+        return Connect4Board.winner(this.board);
+    }
+
+    /**
+     * Returns the color of the player that has won the game. If both players have a connect 4 or neither do, then
+     * this will return PlayerColor.None.
+     *
+     * @param testBoard A board to test for a winner.
+     * @return the color of the winner.
+     */
+    public static PlayerColor winner(PlayerColor[][] testBoard) {
         boolean blackHas4 = false;
         boolean whiteHas4 = false;
 
-        for (int col = 0; col < BoardWidth; ++col) {
-            for (int row = 0; row < BoardHeight; ++row) {
-                PlayerColor currPT = this.board[col][row];
+        for (int col = 0; col < testBoard.length; ++col) {
+            for (int row = 0; row < testBoard[col].length; ++row) {
+                PlayerColor currPT = testBoard[col][row];
 
                 boolean skipCondition =
                         currPT == PlayerColor.None ||
-                        (currPT == PlayerColor.Black && blackHas4) ||
-                        (currPT == PlayerColor.White && whiteHas4);
+                                (currPT == PlayerColor.Black && blackHas4) ||
+                                (currPT == PlayerColor.White && whiteHas4);
 
                 if (!skipCondition) {
                     boolean currPTFound4 = false;
 
                     // Check 3 tiles to the NE
-                    if ((col <= BoardWidth - 4) && (row >= 3)) {
-                        currPTFound4 |= (this.board[col + 1][row - 1] == currPT) &&
-                                (this.board[col + 2][row - 2] == currPT) &&
-                                (this.board[col + 3][row - 3] == currPT);
+                    if ((col <= testBoard.length - 4) && (row >= 3)) {
+                        currPTFound4 |= (testBoard[col + 1][row - 1] == currPT) &&
+                                (testBoard[col + 2][row - 2] == currPT) &&
+                                (testBoard[col + 3][row - 3] == currPT);
                     }
 
                     // Check 3 tiles to the E
-                    if (col <= BoardWidth - 4) {
-                        currPTFound4 |= (this.board[col + 1][row] == currPT) &&
-                                (this.board[col + 2][row] == currPT) &&
-                                (this.board[col + 3][row] == currPT);
+                    if (col <= testBoard.length - 4) {
+                        currPTFound4 |= (testBoard[col + 1][row] == currPT) &&
+                                (testBoard[col + 2][row] == currPT) &&
+                                (testBoard[col + 3][row] == currPT);
                     }
 
                     // Check 3 tiles to the SE
-                    if ((col <= BoardWidth - 4) && (row <= BoardHeight - 4)) {
-                        currPTFound4 |= (this.board[col + 1][row + 1] == currPT) &&
-                                (this.board[col + 2][row + 2] == currPT) &&
-                                (this.board[col + 3][row + 3] == currPT);
+                    if ((col <= testBoard.length - 4) && (row <= testBoard[col].length - 4)) {
+                        currPTFound4 |= (testBoard[col + 1][row + 1] == currPT) &&
+                                (testBoard[col + 2][row + 2] == currPT) &&
+                                (testBoard[col + 3][row + 3] == currPT);
                     }
 
                     // Check 3 tiles to the S
-                    if (row <= BoardHeight - 4) {
-                        currPTFound4 |= (this.board[col][row + 1] == currPT) &&
-                                (this.board[col][row + 2] == currPT) &&
-                                (this.board[col][row + 3] == currPT);
+                    if (row <= testBoard[col].length - 4) {
+                        currPTFound4 |= (testBoard[col][row + 1] == currPT) &&
+                                (testBoard[col][row + 2] == currPT) &&
+                                (testBoard[col][row + 3] == currPT);
 
                     }
 
@@ -162,9 +173,9 @@ public class Connect4Board {
         }
 
         return (blackHas4 && whiteHas4)? PlayerColor.None :
-               blackHas4? PlayerColor.Black :
-               whiteHas4? PlayerColor.White :
-               PlayerColor.None;
+                blackHas4? PlayerColor.Black :
+                        whiteHas4? PlayerColor.White :
+                                PlayerColor.None;
     }
 
 
