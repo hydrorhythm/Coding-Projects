@@ -1,5 +1,6 @@
 package com.codingprojects.connect4.agents;
 
+import com.codingprojects.connect4.Connect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
 import java.security.InvalidParameterException;
@@ -39,15 +40,15 @@ public abstract class Agent {
      * Allow the agent to process the state of the board before making a decision. Returns an integer, representing
      * the column that the player wishes to drop a token into.
      *
-     * @param board A 2D array of type PlayerColor denoting the current state of the game. The first dimension is the
+     * @param connect4Board A 2D array of type PlayerColor denoting the current state of the game. The first dimension is the
      *              boards column, and the second dimension is the boards row. Row 0 is the top of the board and row n-1
      *              is the bottom.
      *
      * @return An integer representing the column the player wishes to drop a token into.
      */
-    public int perceive(PlayerColor[][] board) {
-        if (null == board || 0 == board.length || 0 == board[0].length) {
-            throw new InvalidParameterException("Board has no dimensions.");
+    public int perceive(Connect4BoardInquiry connect4Board) {
+        if (connect4Board.isFull()) {
+            throw new InvalidParameterException("Cannot perform an action. Board is already full.");
         }
         return 0; // valid board return code.
     }

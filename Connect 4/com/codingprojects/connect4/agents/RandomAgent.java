@@ -1,5 +1,6 @@
 package com.codingprojects.connect4.agents;
 
+import com.codingprojects.connect4.Connect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
 import java.util.*;
@@ -11,16 +12,12 @@ import java.util.*;
  */
 public class RandomAgent extends Agent {
 
-    private Random random;
 
     /**
-     * Initializes this agent with a token color.
-     *
-     * @param color Color of the tokens used by this player.
+     * Internal random number generator.
      */
-    public RandomAgent(PlayerColor color) {
-        this(color, System.nanoTime());
-    }
+    private Random random;
+
 
     /**
      * Initializes this agent with a token color and with a seed for random number generation.
@@ -33,17 +30,18 @@ public class RandomAgent extends Agent {
        this.random = new Random(seed);
     }
 
+
     @Override
-    public int perceive(PlayerColor[][] board) {
+    public int perceive(Connect4BoardInquiry board) {
 
         super.perceive(board);
 
         // Determine possible moves.
         List<Integer> possibleMoves = new ArrayList<>();
 
-        for (Integer i = 0; i < board.length; ++i)
-            if (board[i][0] == PlayerColor.None)
-                possibleMoves.add(i);
+        for (int col = 0; col < board.numColumns(); ++col)
+            if (board.getTokenColor(col,0) == PlayerColor.None)
+                possibleMoves.add(col);
 
         return possibleMoves.get(random.nextInt(possibleMoves.size()));
     }

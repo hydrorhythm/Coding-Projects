@@ -3,8 +3,9 @@ package com.codingprojects.connect4;
 /**
  * Connect4Board class, representing a hollow, NxN Connect 4 game board.
  */
-public class Connect4Board {
+public class Connect4Board implements Connect4BoardInquiry {
 
+    // TODO swap all [col][row] with this.getTokenColor(col, row)
 
     /**
      * Number of columns in the board.
@@ -40,6 +41,41 @@ public class Connect4Board {
 
 
     /**
+     * Allows a player to drop a token into a column.
+     *
+     * @param column Column number in which to drop a token. Should be 0 to (com.codingprojects.connect4.Connect4Board.BoardSize - 1)
+     * @param player Color of token to drop into column.
+     * @return True if the move was valid and the board was modified. False otherwise.
+     */
+    public boolean insertToken(int column, PlayerColor player) {
+        if (column >= BoardWidth || column < 0) {
+            return false;
+        }
+
+        if (this.board[column][0] != PlayerColor.None) {
+            return false;
+        }
+
+        // Token falls until it rests on top of another token or
+        // it rests on the bottom row.
+        for (int row = 1; row < BoardHeight; ++row) {
+
+            if (this.board[column][row] != PlayerColor.None) {
+                this.board[column][row - 1] = player;
+                break;
+            }
+            else if (row == BoardHeight - 1) {
+                this.board[column][row] = player;
+                break;
+            }
+        }
+
+        this.numberOfTokens += 1;
+        return true;
+    }
+
+
+    /**
      * Clears the board, allowing the game to start over.
      */
     public void drop() {
@@ -52,119 +88,53 @@ public class Connect4Board {
     }
 
 
-    /**
-     * Gets a copy of the board.
-     */
-    public PlayerColor[][] getCopyOfBoard() {
-        PlayerColor[][] output = new PlayerColor[BoardWidth][BoardHeight];
-        for (int col = 0; col < BoardWidth; ++col) {
-            for (int row = 0; row < BoardHeight; ++row) {
-                output[col][row] = board[col][row];
-            }
-        }
-        return output;
-    }
-
-
-    /**
-     * Allows a player to drop a token into a column.
-     *
-     * @param column Column number in which to drop a token. Should be 0 to (com.codingprojects.connect4.Connect4Board.BoardSize - 1)
-     * @param player Color of token to drop into column.
-     * @return True if the move was valid and the board was modified. False otherwise.
-     */
-    public boolean insertToken(int column, PlayerColor player) {
-       if (column >= BoardWidth || column < 0) {
-           return false;
-       }
-
-       if (this.board[column][0] != PlayerColor.None) {
-           return false;
-       }
-
-        // Token falls until it rests on top of another token or
-        // it rests on the bottom row.
-       for (int row = 1; row < BoardHeight; ++row) {
-
-           if (this.board[column][row] != PlayerColor.None) {
-               this.board[column][row - 1] = player;
-               break;
-           }
-           else if (row == BoardHeight - 1) {
-               this.board[column][row] = player;
-               break;
-           }
-       }
-
-       this.numberOfTokens += 1;
-       return true;
-    }
-
-
-    /**
-     * Returns the color of the player that has won the game. If both players have a connect 4 or neither do, then
-     * this will return PlayerColor.None.
-     *
-     * @return the color of the winner.
-     */
+    @Override
     public PlayerColor winner() {
-        return Connect4Board.winner(this.board);
-    }
 
-
-    /**
-     * Returns the color of the player that has won the game. If both players have a connect 4 or neither do, then
-     * this will return PlayerColor.None.
-     *
-     * @param testBoard A board to test for a winner.
-     * @return the color of the winner.
-     */
-    public static PlayerColor winner(PlayerColor[][] testBoard) {
-
-        if (null == testBoard || 0 == testBoard.length || 0 == testBoard[0].length)
+        if (null == this.board || 0 == this.board.length || 0 == this.board[0].length)
             return PlayerColor.None;
 
         boolean blackHas4 = false;
         boolean whiteHas4 = false;
 
-        for (int col = 0; col < testBoard.length; ++col) {
-            for (int row = 0; row < testBoard[col].length; ++row) {
-                PlayerColor currPT = testBoard[col][row];
+        for (int col = 0; col < this.board.length; ++col) {
+            for (int row = 0; row < this.board[col].length; ++row) {
+                PlayerColor currPT = this.board[col][row];
 
                 boolean skipCondition =
                         currPT == PlayerColor.None ||
-                        (currPT == PlayerColor.Black && blackHas4) ||
-                        (currPT == PlayerColor.White && whiteHas4);
+                                (currPT == PlayerColor.Black && blackHas4) ||
+                                (currPT == PlayerColor.White && whiteHas4);
 
                 if (!skipCondition) {
                     boolean currPTFound4 = false;
 
                     // Check 3 tiles to the NE
-                    if ((col <= testBoard.length - 4) && (row >= 3)) {
-                        currPTFound4 |= (testBoard[col + 1][row - 1] == currPT) &&
-                                (testBoard[col + 2][row - 2] == currPT) &&
-                                (testBoard[col + 3][row - 3] == currPT);
+                    if ((col <= this.board.length - 4) && (row >= 3)) {
+                        currPTFound4 |= (this.board[col + 1][row - 1] == currPT) &&
+                                (this.board[col + 2][row - 2] == currPT) &&
+                                (this.board[col + 3][row - 3] == currPT);
                     }
 
                     // Check 3 tiles to the E
-                    if (col <= testBoard.length - 4) {
-                        currPTFound4 |= (testBoard[col + 1][row] == currPT) &&
-                                (testBoard[col + 2][row] == currPT) &&
-                                (testBoard[col + 3][row] == currPT);
+                    if (col <= this.board.length - 4) {
+                        currPTFound4 |= (this.board[col + 1][row] == currPT) &&
+                                (this.board[col + 2][row] == currPT) &&
+                                (this.board[col + 3][row] == currPT);
                     }
 
                     // Check 3 tiles to the SE
-                    if ((col <= testBoard.length - 4) && (row <= testBoard[col].length - 4)) {
-                        currPTFound4 |= (testBoard[col + 1][row + 1] == currPT) &&
-                                (testBoard[col + 2][row + 2] == currPT) &&
-                                (testBoard[col + 3][row + 3] == currPT);
+                    if ((col <= this.board.length - 4) && (row <= this.board[col].length - 4)) {
+                        currPTFound4 |= (this.board[col + 1][row + 1] == currPT) &&
+                                (this.board[col + 2][row + 2] == currPT) &&
+                                (this.board[col + 3][row + 3] == currPT);
                     }
 
                     // Check 3 tiles to the S
-                    if (row <= testBoard[col].length - 4) {
-                        currPTFound4 |= (testBoard[col][row + 1] == currPT) &&
-                                (testBoard[col][row + 2] == currPT) &&
-                                (testBoard[col][row + 3] == currPT);
+                    if (row <= this.board[col].length - 4) {
+                        currPTFound4 |= (this.board[col][row + 1] == currPT) &&
+                                (this.board[col][row + 2] == currPT) &&
+                                (this.board[col][row + 3] == currPT);
 
                     }
 
@@ -178,25 +148,41 @@ public class Connect4Board {
         }
 
         return (blackHas4 && whiteHas4)? PlayerColor.None :
-               blackHas4? PlayerColor.Black :
-               whiteHas4? PlayerColor.White :
-               PlayerColor.None;
+                blackHas4? PlayerColor.Black :
+                        whiteHas4? PlayerColor.White :
+                                PlayerColor.None;
     }
 
+    @Override
+    public boolean isFull() { return (this.numberOfTokens == (BoardHeight * BoardWidth)); }
 
-    /**
-     * Returns true if the board has no more available spaces.
-     * @return True if the board has no more available spaces.
-     */
-    public boolean isFull() {
-        return (this.numberOfTokens == (BoardHeight * BoardWidth));
+    @Override
+    public PlayerColor getTokenColor(int col, int row) { return this.board[col][row]; }
+
+    @Override
+    public int numColumns() { return Connect4Board.BoardWidth; }
+
+    @Override
+    public int numRows() { return Connect4Board.BoardHeight; }
+
+    @Override
+    public int numSpacesInColumn(int col) {
+
+        if (col < 0 || col >= BoardWidth)
+            throw new IndexOutOfBoundsException("Invalid column number passed to method.");
+
+        for (int row = 0; row < BoardHeight; ++row)
+            if (this.getTokenColor(col,row) != PlayerColor.None)
+                return row;
+
+        return BoardHeight;
     }
 
 
     /**
      * Returns an ASCII representation of the connect 4 board.
      *
-     * @return String with R
+     * @return String ASCII representation.
      */
     public String printableBoard() {
 
@@ -208,8 +194,8 @@ public class Connect4Board {
                 PlayerColor currToken = this.board[col][row];
                 char currTokenChar =
                         (currToken == PlayerColor.Black)? PlayerColor.Black.name().charAt(0) :
-                        (currToken == PlayerColor.White)? PlayerColor.White.name().charAt(0) :
-                        ' ';
+                                (currToken == PlayerColor.White)? PlayerColor.White.name().charAt(0) :
+                                        ' ';
                 output.append(currTokenChar);
             }
             output.append('|');
@@ -218,4 +204,5 @@ public class Connect4Board {
 
         return output.toString();
     }
+
 }

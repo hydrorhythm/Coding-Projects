@@ -9,22 +9,18 @@ import java.util.*;
 public class Main {
 
     private static final Random random = new Random(System.nanoTime());
-    private static final int NUM_GAMES = 500000;
+    private static final int NUM_GAMES = 1000000;
 
     public static void main(String[] args) {
         System.out.println("Running...");
 
         Connect4Board connect4Board = new Connect4Board();
-        PlayerColor[][] copyOfBoard;
 
         EnumMap<PlayerColor, Agent> players = new EnumMap<>(PlayerColor.class);
-
-        players.put(
-                PlayerColor.Black,
+        players.put(PlayerColor.Black,
                 new RandomAgent(PlayerColor.Black, random.nextLong())
         );
-        players.put(
-                PlayerColor.White,
+        players.put(PlayerColor.White,
                 new PrimitivePreventionAgent(PlayerColor.White, random.nextLong())
         );
 
@@ -35,15 +31,15 @@ public class Main {
         boolean     validMove;
         PlayerColor winner;
 
-        EnumMap<PlayerColor, Integer> gameStats = new EnumMap<>(PlayerColor.class);
-        gameStats.put(PlayerColor.None,  0);
-        gameStats.put(PlayerColor.White, 0);
-        gameStats.put(PlayerColor.Black, 0);
+        EnumMap<GameStatistics, Integer> gameStatistics = new EnumMap<>(GameStatistics.class);
+        gameStatistics.put(GameStatistics.Ties,  0);
+        gameStatistics.put(GameStatistics.BlackWins, 0);
+        gameStatistics.put(GameStatistics.WhiteWins, 0);
 
         // Stats Loop
         for (int iteration = 1; iteration <= NUM_GAMES; ++iteration) {
 
-            if (iteration % 10000 == 1) {
+            if (iteration % 10000 == 1){
                 System.out.println("Starting game " +iteration+ " of " +NUM_GAMES);
             }
 
@@ -51,10 +47,9 @@ public class Main {
             do {
                 currPlrColor = PlayerColor.getNext(currPlrColor);
                 currentPlayer = players.get(currPlrColor);
-                copyOfBoard = connect4Board.getCopyOfBoard();
 
                 do {
-                    playerChosenColumn = currentPlayer.perceive(copyOfBoard);
+                    playerChosenColumn = currentPlayer.perceive(connect4Board);
                     validMove = connect4Board.insertToken(
                             playerChosenColumn,
                             currentPlayer.getPlayerColor()
@@ -64,18 +59,35 @@ public class Main {
                 winner = connect4Board.winner();
             } while (winner == PlayerColor.None && !connect4Board.isFull());
 
-            gameStats.put(winner, gameStats.remove(winner) + 1);
+            // Update statistics
+            // TODO statistics for average game length given a
+            switch (winner) {
+                case Black:
+                    int prevNumBlkWins = gameStatistics.remove(GameStatistics.BlackWins);
+                    gameStatistics.put(GameStatistics.BlackWins, prevNumBlkWins + 1);
+                    break;
+                case White:
+                    int prevNumWhtWins = gameStatistics.remove(GameStatistics.WhiteWins);
+                    gameStatistics.put(GameStatistics.WhiteWins, prevNumWhtWins + 1);
+                    break;
+                case None:
+                    int prevNumTies = gameStatistics.remove(GameStatistics.Ties);
+                    gameStatistics.put(GameStatistics.Ties, prevNumTies + 1);
+                    break;
+            }
+
+
             connect4Board.drop();
         }
 
         System.out.println("After " +NUM_GAMES+ " games of Connect 4:");
         System.out.println("Draws: ");
-        System.out.println("  " + gameStats.get(PlayerColor.None).toString() + " game(s) with no winner");
+        System.out.println("  " + gameStatistics.get(GameStatistics.Ties).toString() + " game(s) with no winner");
         System.out.println("White: ");
         System.out.println("  " + players.get(PlayerColor.White).getClass().toString());
-        System.out.println("  " + gameStats.get(PlayerColor.White).toString() + " wins");
+        System.out.println("  " + gameStatistics.get(GameStatistics.WhiteWins).toString() + " wins");
         System.out.println("Black: ");
         System.out.println("  " + players.get(PlayerColor.Black).getClass().toString());
-        System.out.println("  " + gameStats.get(PlayerColor.Black).toString() + " wins");
+        System.out.println("  " + gameStatistics.get(GameStatistics.BlackWins).toString() + " wins");
     }
 }
