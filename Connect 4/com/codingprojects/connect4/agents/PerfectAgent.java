@@ -3,6 +3,8 @@ package com.codingprojects.connect4.agents;
 import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
+import java.util.HashMap;
+
 /**
  * The PerfectAgent is to be designed with utilities that allow it to detect threats and determine which player controls
  * the "Zugzwang". The hope is to develop a connect 4 agent that can play a perfect game of connect 4 without performing
@@ -23,6 +25,35 @@ import com.codingprojects.connect4.PlayerColor;
  */
 public class PerfectAgent extends Agent {
 
+
+    /**
+     * This class sees the world differently.
+     *
+     * ...
+     *   _ _ _ _ _ _ _
+     * 6|_|_|_|_|_|_|_|
+     * 5|_|_|_|_|_|_|_|
+     * 4|_|_|_|_|_|_|_|
+     * 3|_|_|_|_|_|_|_|
+     * 2|_|_|_|_|_|_|_|
+     * 1|_|_|_|_|_|_|_|
+     *   a b c d e f g  ...
+     */
+
+
+    // private static final HashMap<Character, Integer> columnXref;
+    // static {
+    //    columnXref = new HashMap<>();
+    //    columnXref.put('a', 0);
+    //    columnXref.put('b', 1);
+    //    columnXref.put('c', 2);
+    //    columnXref.put('d', 3);
+    //    columnXref.put('e', 4);
+    //    columnXref.put('f', 5);
+    //    columnXref.put('g', 6);
+    //}
+
+
     /**
      * Initializes this agent with a token color.
      *
@@ -32,8 +63,9 @@ public class PerfectAgent extends Agent {
         super(color);
     }
 
+
     @Override
     public int perceive(IConnect4BoardInquiry board) {
-        return -1;
+        return (int) 'd' - 'a';
     }
 }
