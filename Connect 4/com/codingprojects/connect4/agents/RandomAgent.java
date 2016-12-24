@@ -1,6 +1,6 @@
 package com.codingprojects.connect4.agents;
 
-import com.codingprojects.connect4.Connect4BoardInquiry;
+import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
 import java.util.*;
@@ -32,7 +32,7 @@ public class RandomAgent extends Agent {
 
 
     @Override
-    public int perceive(Connect4BoardInquiry board) {
+    public int perceive(IConnect4BoardInquiry board) {
 
         super.perceive(board);
 

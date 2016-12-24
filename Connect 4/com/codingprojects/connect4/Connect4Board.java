@@ -3,7 +3,7 @@ package com.codingprojects.connect4;
 /**
  * Connect4Board class, representing a hollow, NxN Connect 4 game board.
  */
-public class Connect4Board implements Connect4BoardInquiry {
+public class Connect4Board implements IConnect4BoardInquiry {
 
     // TODO swap all [col][row] with this.getTokenColor(col, row)
 

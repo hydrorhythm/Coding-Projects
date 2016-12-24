@@ -5,7 +5,7 @@ package com.codingprojects.connect4;
  *
  * Created by austi on 2016-12-20.
  */
-public interface Connect4BoardInquiry {
+public interface IConnect4BoardInquiry {
 
     /**
      * Returns the color of the player that has won the game. If both players have a connect 4 or neither do, then

@@ -1,6 +1,6 @@
 package com.codingprojects.connect4.agents;
 
-import com.codingprojects.connect4.Connect4BoardInquiry;
+import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
 import java.util.*;
@@ -52,7 +52,7 @@ public class PrimitivePreventionAgent extends Agent {
 
 
     @Override
-    public int perceive(Connect4BoardInquiry board) {
+    public int perceive(IConnect4BoardInquiry board) {
 
         super.perceive(board);
 
@@ -102,7 +102,7 @@ public class PrimitivePreventionAgent extends Agent {
      * @return Returns a valid column number if it will allow the agent to win this turn. Returns -1 if no columns
      * will allow this agent to win.
      */
-    private int winningColumn(PlayerColor player, Connect4BoardInquiry board) {
+    private int winningColumn(PlayerColor player, IConnect4BoardInquiry board) {
 
         for (int col = 0; col < board.numColumns(); ++col) {
 
@@ -133,7 +133,7 @@ public class PrimitivePreventionAgent extends Agent {
      * @return True if a token belonging to a player being placed in the specified column and row of the board will
      * cause them to win.
      */
-    private boolean playerWinsGivenToken(Connect4BoardInquiry connect4Board, PlayerColor player, int col, int row) {
+    private boolean playerWinsGivenToken(IConnect4BoardInquiry connect4Board, PlayerColor player, int col, int row) {
 
         int [][] searchDirections = new int[][] {
                 { 1, -1}, // SW to NE diagonal

@@ -1,6 +1,6 @@
 package com.codingprojects.connect4.agents;
 
-import com.codingprojects.connect4.Connect4BoardInquiry;
+import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
 import java.security.InvalidParameterException;
@@ -46,7 +46,7 @@ public abstract class Agent {
      *
      * @return An integer representing the column the player wishes to drop a token into.
      */
-    public int perceive(Connect4BoardInquiry connect4Board) {
+    public int perceive(IConnect4BoardInquiry connect4Board) {
         if (connect4Board.isFull()) {
             throw new InvalidParameterException("Cannot perform an action. Board is already full.");
         }
