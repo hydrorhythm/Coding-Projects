@@ -23,7 +23,7 @@ public enum PlayerColor {
      * Returns the color of the player that plays the first move.
      * @return The color of the player that plays the first move.
      */
-    public static PlayerColor first() {
+    public static PlayerColor firstToMove() {
         return Black;
     }
 }

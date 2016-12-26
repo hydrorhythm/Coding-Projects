@@ -3,7 +3,6 @@ package com.codingprojects.connect4;
 import com.codingprojects.connect4.agents.Agent;
 import com.codingprojects.connect4.agents.PerfectAgent;
 import com.codingprojects.connect4.agents.PrimitivePreventionAgent;
-import com.codingprojects.connect4.agents.RandomAgent;
 
 import java.util.*;
 
@@ -25,7 +24,7 @@ public class Main {
                 new PrimitivePreventionAgent(PlayerColor.White, random.nextLong())
         );
 
-        PlayerColor currPlrColor = PlayerColor.first();
+        PlayerColor currPlrColor = PlayerColor.firstToMove();
         Agent currentPlayer;
 
         int         playerChosenColumn;

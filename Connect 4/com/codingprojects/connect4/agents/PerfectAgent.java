@@ -97,11 +97,13 @@ public class PerfectAgent extends PrimitivePreventionAgent {
                 unsafeColumns.add(loc.column);
         }
 
+        PlayerColor.firstToMove();
 
-        for (int preferredColumn : PerfectAgent.preferredColumns) {
-            if (!unsafeColumns.contains(preferredColumn) && Agent.numSpacesInColumn(board, preferredColumn) > 0)
-                return preferredColumn;
-        }
+
+
+
+
+
 
 
         for (int availableColumn = 0; availableColumn < board.numColumns(); ++availableColumn) {
