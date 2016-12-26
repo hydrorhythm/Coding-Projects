@@ -45,12 +45,4 @@ public interface IConnect4BoardInquiry {
      * @return The number of rows in the board.
      */
     int numRows();
-
-
-    /**
-     * Returns the number of empty spaces that are in the specified column.
-     * @param col Column to check for spaces.
-     * @return The number of empty spaces in the column.
-     */
-    int numSpacesInColumn(int col);
 }

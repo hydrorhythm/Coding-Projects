@@ -3,7 +3,11 @@ package com.codingprojects.connect4.agents;
 import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * The PerfectAgent is to be designed with utilities that allow it to detect threats and determine which player controls
@@ -23,35 +27,17 @@ import java.util.HashMap;
  *
  * Created by austi on 2016-12-24.
  */
-public class PerfectAgent extends Agent {
+public class PerfectAgent extends PrimitivePreventionAgent {
 
+    private static class Location {
+        int column;
+        int row;
 
-    /**
-     * This class sees the world differently.
-     *
-     * ...
-     *   _ _ _ _ _ _ _
-     * 6|_|_|_|_|_|_|_|
-     * 5|_|_|_|_|_|_|_|
-     * 4|_|_|_|_|_|_|_|
-     * 3|_|_|_|_|_|_|_|
-     * 2|_|_|_|_|_|_|_|
-     * 1|_|_|_|_|_|_|_|
-     *   a b c d e f g  ...
-     */
-
-
-    // private static final HashMap<Character, Integer> columnXref;
-    // static {
-    //    columnXref = new HashMap<>();
-    //    columnXref.put('a', 0);
-    //    columnXref.put('b', 1);
-    //    columnXref.put('c', 2);
-    //    columnXref.put('d', 3);
-    //    columnXref.put('e', 4);
-    //    columnXref.put('f', 5);
-    //    columnXref.put('g', 6);
-    //}
+        Location(int col, int row) {
+            this.column = col;
+            this.row = row;
+        }
+    }
 
 
     /**
@@ -64,8 +50,28 @@ public class PerfectAgent extends Agent {
     }
 
 
+    /**
+     * Determines locations where a player could place a token and cause themselves to win.
+     *
+     * @param board Interface for extracting information from a Connect 4 board.
+     * @return A List of locations where the player could place a token and win.
+     */
+    private static List<Location> threats(PlayerColor player, IConnect4BoardInquiry board) {
+        List<Location> out = new ArrayList<>();
+
+        for (int col = 0; col < board.numColumns(); ++col)
+            for (int row = 0; row < board.numRows(); ++row)
+                if (board.getTokenColor(col, row) == PlayerColor.None)
+                    if (Agent.playerWinsGivenToken(board, player, col, row))
+                        out.add(new Location(col, row));
+
+        return out;
+    }
+
+    
+
     @Override
     public int perceive(IConnect4BoardInquiry board) {
-        return (int) 'd' - 'a';
+        return (int) 'd' - 'a'; // Middle is most powerful.
     }
 }

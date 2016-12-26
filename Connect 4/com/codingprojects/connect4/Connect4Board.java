@@ -165,19 +165,6 @@ public class Connect4Board implements IConnect4BoardInquiry {
     @Override
     public int numRows() { return Connect4Board.BoardHeight; }
 
-    @Override
-    public int numSpacesInColumn(int col) {
-
-        if (col < 0 || col >= BoardWidth)
-            throw new IndexOutOfBoundsException("Invalid column number passed to method.");
-
-        for (int row = 0; row < BoardHeight; ++row)
-            if (this.getTokenColor(col,row) != PlayerColor.None)
-                return row;
-
-        return BoardHeight;
-    }
-
 
     /**
      * Returns an ASCII representation of the connect 4 board.
