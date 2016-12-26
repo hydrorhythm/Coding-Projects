@@ -68,10 +68,10 @@ public class PerfectAgent extends PrimitivePreventionAgent {
         return out;
     }
 
-    
+
 
     @Override
     public int perceive(IConnect4BoardInquiry board) {
-        return (int) 'd' - 'a'; // Middle is most powerful.
+        return -1;
     }
-}
+    }
