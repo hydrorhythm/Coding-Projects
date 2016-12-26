@@ -1,6 +1,7 @@
 package com.codingprojects.connect4;
 
 import com.codingprojects.connect4.agents.Agent;
+import com.codingprojects.connect4.agents.PerfectAgent;
 import com.codingprojects.connect4.agents.PrimitivePreventionAgent;
 import com.codingprojects.connect4.agents.RandomAgent;
 
@@ -18,7 +19,7 @@ public class Main {
 
         EnumMap<PlayerColor, Agent> players = new EnumMap<>(PlayerColor.class);
         players.put(PlayerColor.Black,
-                new RandomAgent(PlayerColor.Black, random.nextLong())
+                new PerfectAgent(PlayerColor.Black)
         );
         players.put(PlayerColor.White,
                 new PrimitivePreventionAgent(PlayerColor.White, random.nextLong())
@@ -39,7 +40,7 @@ public class Main {
         // Stats Loop
         for (int iteration = 1; iteration <= NUM_GAMES; ++iteration) {
 
-            if (iteration % 10000 == 1){
+            if (iteration % 10000 == 0  ){
                 System.out.println("Starting game " +iteration+ " of " +NUM_GAMES);
             }
 

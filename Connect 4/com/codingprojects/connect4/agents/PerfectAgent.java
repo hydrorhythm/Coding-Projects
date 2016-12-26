@@ -3,11 +3,8 @@ package com.codingprojects.connect4.agents;
 import com.codingprojects.connect4.IConnect4BoardInquiry;
 import com.codingprojects.connect4.PlayerColor;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * The PerfectAgent is to be designed with utilities that allow it to detect threats and determine which player controls
@@ -29,7 +26,7 @@ import java.util.function.Function;
  */
 public class PerfectAgent extends PrimitivePreventionAgent {
 
-    private static class Location {
+    private static final class Location {
         int column;
         int row;
 
@@ -38,6 +35,11 @@ public class PerfectAgent extends PrimitivePreventionAgent {
             this.row = row;
         }
     }
+
+    /**
+     * The middle column is the most valuable. The edge columns are the least valuable. This is a heuristic.
+     */
+    private static final int[] preferredColumns = {3, 2, 4, 1, 5, 0, 6};
 
 
     /**
@@ -70,8 +72,43 @@ public class PerfectAgent extends PrimitivePreventionAgent {
 
 
 
+
+
     @Override
     public int perceive(IConnect4BoardInquiry board) {
+
+        List<Location> myThreats = PerfectAgent.threats(color, board);
+
+        for (Location loc : myThreats) {
+            if (loc.row == (Agent.numSpacesInColumn(board, loc.column) + 1))
+                return loc.column;
+        }
+
+        List<Location> enemyThreats = PerfectAgent.threats(PlayerColor.getNext(color), board);
+        List<Integer>  unsafeColumns = new ArrayList<>();
+
+        for (Location loc : enemyThreats) {
+            // If the opponent can win next turn
+            if (loc.row == (Agent.numSpacesInColumn(board, loc.column) + 1))
+                return loc.column;
+
+            // If the opponent can win next turn as a result of a token in this column.
+            if (loc.row == (Agent.numSpacesInColumn(board, loc.column)))
+                unsafeColumns.add(loc.column);
+        }
+
+
+        for (int preferredColumn : PerfectAgent.preferredColumns) {
+            if (!unsafeColumns.contains(preferredColumn) && Agent.numSpacesInColumn(board, preferredColumn) > 0)
+                return preferredColumn;
+        }
+
+
+        for (int availableColumn = 0; availableColumn < board.numColumns(); ++availableColumn) {
+            if (Agent.numSpacesInColumn(board, availableColumn) > 0)
+                return availableColumn;
+        }
+
         return -1;
     }
-    }
+}
